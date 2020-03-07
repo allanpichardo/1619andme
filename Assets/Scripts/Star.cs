@@ -9,17 +9,14 @@ public class Star : MonoBehaviour
 {
     private AudioPoint _audioPoint;
     private SkyGenerator _skyGenerator;
-    private AudioSource _audioSource;
-
+    
+    public AudioSource audioSource;
     public float timeToActivation = 1.0f;
+    
     private bool _isActivating = false;
 
     private static readonly int Color45Edb685 = Shader.PropertyToID("Color_45EDB685");
 
-    private void Start()
-    {
-        _audioSource = GetComponent<AudioSource>();
-    }
 
     public void SetSkyGenerator(SkyGenerator skyGenerator)
     {
@@ -35,38 +32,34 @@ public class Star : MonoBehaviour
     IEnumerator PlayAudio()
     {
         string url = Path.Combine(Application.streamingAssetsPath, "sounds", $"{_audioPoint.id}.mp3");
+        Debug.Log(url);
         
-        using (UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip(url, AudioType.MPEG))
+        using (UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip($"file://{url}", AudioType.MPEG))
         {
             yield return www.Send();
 
-            if (www.isError)
+            if (www.isNetworkError)
             {
                 Debug.LogError(www.error);
             }
             else
             {
                 AudioClip audioClip = DownloadHandlerAudioClip.GetContent(www);
-                _audioSource.PlayOneShot(audioClip);
+                audioSource.PlayOneShot(audioClip, 0.25f);
             }
         }
     }
 
     public void Play()
     {
-        if (!_audioSource.isPlaying)
+        if (audioSource.isPlaying)
         {
-            StartCoroutine(PlayAudio());
+            audioSource.Stop();
         }
+        StartCoroutine(PlayAudio());
     }
 
-    public void Stop()
-    {
-        if (_audioSource.isPlaying)
-        {
-            _audioSource.Stop();
-        }
-    }
+    
 
     private IEnumerator ActivationTimer()
     {
@@ -87,6 +80,7 @@ public class Star : MonoBehaviour
         if (_isActivating)
         {
             _skyGenerator.OnLookAtStar(this);
+            Play();
             _isActivating = false;
         }
     }

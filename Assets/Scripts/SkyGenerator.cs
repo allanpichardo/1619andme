@@ -8,6 +8,7 @@ public class SkyGenerator : MonoBehaviour, Constellation.CompletionListener
     private LineRenderer _lineRenderer;
     private List<Constellation> _constellations;
 
+    public AudioSource musicSource;
     public GameObject constellationPrefab;
     public GameObject starPrefab;
     public int spacing = 100;
@@ -79,6 +80,7 @@ public class SkyGenerator : MonoBehaviour, Constellation.CompletionListener
         Star star = thisStar.GetComponent<Star>();
         star.SetAudioPoint(audioPoint);
         star.SetSkyGenerator(this);
+        star.audioSource = musicSource;
 
         if (star.GetAudioPoint().IsInAfrica())
         {
