@@ -42,18 +42,15 @@ public class SkyGenerator : MonoBehaviour, Constellation.CompletionListener
 
     public void OnLookAtStar(Star star)
     {
-        Debug.Log($"Activated: {star.GetAudioPoint().ToString()}");
         Constellation constellation = GetActiveConstellation(star);
         if (constellation != null)
         {
-            Debug.Log("Active Constellation");
             constellation.ContinueSequence();
         }
         else
         {
             if (!star.GetAudioPoint().IsInAfrica())
             {
-                Debug.Log("New Constellation");
                 constellation = Instantiate(constellationPrefab, this.transform).GetComponent<Constellation>();
                 constellation.SetPath(GeneratePath(star));
                 constellation.SetCompletionListener(this);
@@ -83,6 +80,11 @@ public class SkyGenerator : MonoBehaviour, Constellation.CompletionListener
         star.SetAudioPoint(audioPoint);
         star.SetSkyGenerator(this);
 
+        if (star.GetAudioPoint().IsInAfrica())
+        {
+            star.SetColor(Color.black);
+        }
+
         if (!skipDictionary)
         {
             _starScape.Add(audioPoint.id, star);
@@ -91,7 +93,6 @@ public class SkyGenerator : MonoBehaviour, Constellation.CompletionListener
 
     public void OnFinished(Constellation constellation)
     {
-        Debug.Log("Removing Used Constellation");
         _constellations.Remove(constellation);
     }
 }

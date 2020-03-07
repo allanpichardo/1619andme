@@ -6,11 +6,13 @@ using UnityEngine;
 [RequireComponent(typeof(LineRenderer))]
 public class Constellation: MonoBehaviour
 {
+    private static readonly int Color45Edb685 = Shader.PropertyToID("Color_45EDB685");
     public float speed = 1.0f;
+    public float fadeTime = 20.0f;
     
     private Queue<Star> _path;
     private int _step;
-    private int _count;
+    private int _max;
     private LineRenderer _lineRenderer;
     private CompletionListener _completionListener;
     private Star _current;
@@ -20,7 +22,7 @@ public class Constellation: MonoBehaviour
     {
         _path = stars;
         _step = 0;
-        _count = stars.Count;
+        _max = stars.Count;
 
         _lineRenderer = GetComponent<LineRenderer>();
         _step++;
@@ -34,13 +36,17 @@ public class Constellation: MonoBehaviour
     public void ContinueSequence()
     {
         _next = GetNext();
-        Debug.Log($"Continuing to {_next.GetAudioPoint()}");
         _step++;
         StartCoroutine(DrawLineSegment());
     }
 
     private IEnumerator DrawLineSegment()
     {
+        float colorInterp = ((_step - 1.0f) / _max);
+        Debug.Log(colorInterp);
+        Color lineColor = Color.Lerp(Color.white, Color.yellow, colorInterp);
+        SetLineColor(lineColor);
+        
         Vector3 start = _current.gameObject.transform.position;
         Vector3 end = _next.gameObject.transform.position;
         float step = 0.01f;
@@ -56,14 +62,43 @@ public class Constellation: MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
 
-        if (!IsFinished())
+        _current = _next;
+        
+        if(IsFinished())
         {
-            _current = _next;
-        }
-        else
-        {
+            RevealStar(_current);
             _completionListener.OnFinished(this);
+            BeginFadeSequence();
         }
+    }
+
+    private void BeginFadeSequence()
+    {
+        Color startColor = Color.yellow;
+        Color endColor = Color.clear;
+        StartCoroutine(FadeAnimation(startColor, endColor));
+    }
+
+    private IEnumerator FadeAnimation(Color startColor, Color endColor)
+    {
+        float elapsed = 0.0f;
+        while (elapsed < fadeTime)
+        {
+            SetLineColor(Color.Lerp(startColor, endColor, elapsed / fadeTime));
+            elapsed += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
+    private void RevealStar(Star current)
+    {
+        current.SetColor(Color.red);
+        SetLineColor(Color.yellow);
+    }
+    
+    private void SetLineColor(Color color)
+    {
+        _lineRenderer.material.SetColor(Color45Edb685, color);
     }
 
     private Star GetNext()

@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 0.5
+  fadeTime: 90
 --- !u!120 &730356429727173026
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -63,7 +64,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 701ae48d2d38742f38be20639e3bfb35, type: 2}
+  - {fileID: 2100000, guid: 8d9c99079f2014cabaeeb2dbf9984672, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
