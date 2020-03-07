@@ -68,29 +68,36 @@ public class DataService  {
 	}
 	
 	public IEnumerable<AudioPoint> GetAllAudioPointsGrouped(){
-		return _connection.Query<AudioPoint>("select * from clips group by region");
+		return _connection.Query<AudioPoint>("select * from clips_small group by region");
 	}
 
 	public IEnumerable<AudioPoint> GetTestAudioPoint()
 	{
-		return _connection.Query<AudioPoint>("select * from clips where id = 1");
+		return _connection.Query<AudioPoint>("select * from clips_small where id = 1");
+	}
+
+	public IEnumerable<AudioPoint> GetAudioPoints()
+	{
+		string query =
+			$"SELECT * FROM clips_small";
+		return _connection.Query<AudioPoint>(query);
 	}
 	
 	public IEnumerable<AudioPoint> GetAllAudioPointsNotInAfrica(){
-		return _connection.Query<AudioPoint>("select * from clips where region not in ('Akan', 'Benin', 'Fulani', 'Hausa', 'Igbo', 'Kanem', 'Kangaba', 'Kongo', 'Mali', 'Mande', 'Wolof', 'Yoruba')");
+		return _connection.Query<AudioPoint>("select * from clips_small where region not in ('Akan', 'Benin', 'Fulani', 'Hausa', 'Igbo', 'Kanem', 'Kangaba', 'Kongo', 'Mali', 'Mande', 'Wolof', 'Yoruba')");
 	}
 
 	public AudioPoint GetStartingPoint(string region)
 	{
 		string[] p = {region};
-		return _connection.Query<AudioPoint>("select * from clips where region = ?", p).FirstOrDefault();
+		return _connection.Query<AudioPoint>("select * from clips_small where region = ?", p).FirstOrDefault();
 	}
 
 	public AudioPoint GetNextNearest(AudioPoint start, bool includeAfrica = false)
 	{
 		string query = includeAfrica
-			? "select c.*, ((? - c.x) * (? - c.x)) + ((? - c.y) * (? - c.y)) + ((? - c.z) * (? - c.z)) as distance from clips c where c.region != ? order by distance asc limit 1;"
-			: "select c.*, ((? - c.x) * (? - c.x)) + ((? - c.y) * (? - c.y)) + ((? - c.z) * (? - c.z)) as distance from clips c where c.region != ? and region not in ('Akan', 'Benin', 'Fulani', 'Hausa', 'Igbo', 'Kanem', 'Kangaba', 'Kongo', 'Mali', 'Mande', 'Wolof', 'Yoruba') order by distance limit 1;";
+			? "select c.*, ((? - c.x) * (? - c.x)) + ((? - c.y) * (? - c.y)) + ((? - c.z) * (? - c.z)) as distance from clips_small c where c.region != ? order by distance asc limit 1;"
+			: "select c.*, ((? - c.x) * (? - c.x)) + ((? - c.y) * (? - c.y)) + ((? - c.z) * (? - c.z)) as distance from clips_small c where c.region != ? and region not in ('Akan', 'Benin', 'Fulani', 'Hausa', 'Igbo', 'Kanem', 'Kangaba', 'Kongo', 'Mali', 'Mande', 'Wolof', 'Yoruba') order by distance limit 1;";
 		
 		object[] p = {start.x, start.x, start.y, start.y, start.z, start.z, start.region};
 		return  _connection.Query<AudioPoint>(query, p).FirstOrDefault();
@@ -139,7 +146,7 @@ public class DataService  {
 	public Queue<AudioPoint> GetPath(AudioPoint start, int length = 5)
 	{
 		string query =
-			"select c.*, ((? - c.x) * (? - c.x)) + ((? - c.y) * (? - c.y)) + ((? - c.z) * (? - c.z)) as distance from clips c order by distance;";
+			"select c.*, ((? - c.x) * (? - c.x)) + ((? - c.y) * (? - c.y)) + ((? - c.z) * (? - c.z)) as distance from clips_small c order by distance;";
 		object[] p = {start.x, start.x, start.y, start.y, start.z, start.z, length};
 		IEnumerable<AudioPoint> results =  _connection.Query<AudioPoint>(query, p);
 

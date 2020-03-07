@@ -1,69 +1,79 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class SkyGenerator : MonoBehaviour
+public class SkyGenerator : MonoBehaviour, Constellation.CompletionListener
 {
     private DataService _dataService;
     private Dictionary<int, Star> _starScape;
     private LineRenderer _lineRenderer;
-    
-    public Camera mainCamera;
+    private List<Constellation> _constellations;
+
+    public GameObject constellationPrefab;
     public GameObject starPrefab;
     public int spacing = 100;
     public int pathLength = 10;
     // Start is called before the first frame update
     void Start()
     {
+        _constellations = new List<Constellation>();
         _lineRenderer = GetComponent<LineRenderer>();
         _dataService = new DataService("1619.db");
         _starScape = new Dictionary<int, Star>();
         
-        AudioPoint start = _dataService.GetStartingPoint("Dominican Republic");
-
-        foreach (AudioPoint audioPoint in _dataService.GetAllAudioPointsNotInAfrica())
+        foreach (AudioPoint audioPoint in _dataService.GetAudioPoints())
         {
             AddToSkyscape(audioPoint);
         }
         
-        GeneratePath(start);
     }
 
-    public void GeneratePath(AudioPoint start)
+    private Constellation GetActiveConstellation(Star star)
     {
-        Queue<AudioPoint> path = _dataService.GetPath(start, pathLength);
+        foreach (Constellation constellation in _constellations)
+        {
+            if (constellation.IsNext(star))
+            {
+                return constellation;
+            }
+        }
+
+        return null;
+    }
+
+    public void OnLookAtStar(Star star)
+    {
+        Debug.Log($"Activated: {star.GetAudioPoint().ToString()}");
+        Constellation constellation = GetActiveConstellation(star);
+        if (constellation != null)
+        {
+            Debug.Log("Active Constellation");
+            constellation.ContinueSequence();
+        }
+        else
+        {
+            if (!star.GetAudioPoint().IsInAfrica())
+            {
+                Debug.Log("New Constellation");
+                constellation = Instantiate(constellationPrefab, this.transform).GetComponent<Constellation>();
+                constellation.SetPath(GeneratePath(star));
+                constellation.SetCompletionListener(this);
+                _constellations.Add(constellation);
+            }
+        }
+    }
+
+    public Queue<Star> GeneratePath(Star start)
+    {
+        Queue<AudioPoint> path = _dataService.GetPath(start.GetAudioPoint(), pathLength);
+        Queue<Star> starPath = new Queue<Star>();
         foreach (AudioPoint audioPoint in path)
         {
-            Debug.LogError(audioPoint.ToString());
+            starPath.Enqueue(_starScape[audioPoint.id]);
         }
 
-        DrawConstellation(path);
+        return starPath;
     }
-
-    private void DrawConstellation(Queue<AudioPoint> path)
-    {
-        _lineRenderer.positionCount = path.Count;
-        int position = 0;
-        Star start = _starScape[path.Dequeue().id];
-        _lineRenderer.SetPosition(position, start.transform.position);
-        position++;
-
-        foreach (AudioPoint point in path)
-        {
-            if (_starScape.ContainsKey(point.id))
-            {
-                Star star = _starScape[point.id];
-                _lineRenderer.SetPosition(position, star.transform.position);
-            }
-            else
-            {
-                AddToSkyscape(point, true);
-                _lineRenderer.SetPosition(position, transform.TransformPoint(point.GetPosition(spacing)));
-            }
-            position++;
-        }
-    }
-
+    
     private void AddToSkyscape(AudioPoint audioPoint, bool skipDictionary = false)
     {
         GameObject thisStar =
@@ -71,6 +81,7 @@ public class SkyGenerator : MonoBehaviour
 
         Star star = thisStar.GetComponent<Star>();
         star.SetAudioPoint(audioPoint);
+        star.SetSkyGenerator(this);
 
         if (!skipDictionary)
         {
@@ -78,15 +89,9 @@ public class SkyGenerator : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnFinished(Constellation constellation)
     {
-        Ray ray = mainCamera.ViewportPointToRay(new Vector3(0.5F, 0.5F, 0));
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, float.MaxValue, 8))
-        {
-            Star star = hit.transform.gameObject.GetComponent<Star>();
-            print(star.GetAudioPoint().region);
-        }
+        Debug.Log("Removing Used Constellation");
+        _constellations.Remove(constellation);
     }
 }

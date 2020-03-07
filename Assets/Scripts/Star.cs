@@ -5,17 +5,60 @@ using UnityEngine;
 public class Star : MonoBehaviour
 {
     private AudioPoint _audioPoint;
-    // Start is called before the first frame update
-    void Start()
+    private SkyGenerator _skyGenerator;
+
+    public float timeToActivation = 1.0f;
+    private bool _isActivating = false;
+
+    private static readonly int Color45Edb685 = Shader.PropertyToID("Color_45EDB685");
+
+    public void SetSkyGenerator(SkyGenerator skyGenerator)
     {
-        
+        _skyGenerator = skyGenerator;
+    }
+
+    public void OnLookedEnter()
+    {
+        _isActivating = true;
+        StartCoroutine(ActivationTimer());
+    }
+
+    private IEnumerator ActivationTimer()
+    {
+        float elapsed = 0f;
+        while (elapsed < timeToActivation)
+        {
+            if (_isActivating)
+            {
+                elapsed += Time.deltaTime;
+                yield return new WaitForEndOfFrame();
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        if (_isActivating)
+        {
+            _skyGenerator.OnLookAtStar(this);
+            _isActivating = false;
+        }
+    }
+
+    public void OnLookExit()
+    {
+        _isActivating = false;
     }
 
     public void SetAudioPoint(AudioPoint audioPoint)
     {
         this._audioPoint = audioPoint;
-        Color color = ConvertAndroidColor( audioPoint.region.GetHashCode());
-        this.GetComponent<Renderer>().material.SetColor("Color_45EDB685", color);
+    }
+
+    public void SetColor(Color color)
+    {
+        this.GetComponent<Renderer>().material.SetColor(Color45Edb685, color);
     }
 
     public AudioPoint GetAudioPoint()
@@ -23,20 +66,9 @@ public class Star : MonoBehaviour
         return this._audioPoint;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void PrintInfo()
     {
-        
+        Debug.Log(_audioPoint.ToString());
     }
-    
-    public static Color ConvertAndroidColor(int aCol)
-    {
-        Color c = new Color();
-        c.b = aCol & 255;
-        c.g = (aCol >> 8) & 255;
-        c.r = (aCol >> 16) & 255;
-        return c;
-    }
-    
     
 }
