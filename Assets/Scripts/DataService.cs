@@ -28,12 +28,12 @@ public class DataService  {
             // open StreamingAssets directory and load the db ->
 
 #if UNITY_ANDROID 
-            var loadDb = new WWW("jar:file://" + Application.dataPath + "!/assets/" + databaseName);  // this is the path to your StreamingAssets in android
+            var loadDb = new WWW("jar:file://" + Application.dataPath + "!/assets/db/" + databaseName);  // this is the path to your StreamingAssets in android
             while (!loadDb.isDone) { }  // CAREFUL here, for safety reasons you shouldn't let this while loop unattended, place a timer and error check
             // then save to Application.persistentDataPath
             File.WriteAllBytes(filepath, loadDb.bytes);
 #elif UNITY_IOS
-                 var loadDb = Application.dataPath + "/Raw/" + databaseName;  // this is the path to your StreamingAssets in iOS
+                 var loadDb = Application.dataPath + "/Raw/db/" + databaseName;  // this is the path to your StreamingAssets in iOS
                 // then save to Application.persistentDataPath
                 File.Copy(loadDb, filepath);
 #elif UNITY_WP8

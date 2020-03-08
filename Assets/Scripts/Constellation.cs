@@ -11,12 +11,32 @@ public class Constellation: MonoBehaviour
     public float fadeTime = 20.0f;
     
     private Queue<Star> _path;
+    private List<string> _journeyParts;
     private int _step;
     private int _max;
     private LineRenderer _lineRenderer;
     private CompletionListener _completionListener;
     private Star _current;
     private Star _next;
+    private UIController _uiController;
+
+    private string GetJourneyText()
+    {
+        string text = "";
+        for (int i = 0; i < _journeyParts.Count; i++)
+        {
+            if (i == 0)
+            {
+                text = _journeyParts[i];
+            }
+            else
+            {
+                text = $"{text} • {_journeyParts[i]}";
+            }
+        }
+
+        return text;
+    }
     
     public void SetPath(Queue<Star> stars)
     {
@@ -24,11 +44,14 @@ public class Constellation: MonoBehaviour
         _step = 0;
         _max = stars.Count;
 
+        _journeyParts = new List<string>();
+        _uiController = FindObjectOfType<UIController>();
         _lineRenderer = GetComponent<LineRenderer>();
         _step++;
         _lineRenderer.positionCount = _step;
         _current = stars.Dequeue();
         _lineRenderer.SetPosition(_step - 1, _current.gameObject.transform.position);
+        _journeyParts.Add(_current.GetAudioPoint().region);
         
         ContinueSequence();
     }
@@ -51,6 +74,10 @@ public class Constellation: MonoBehaviour
         Vector3 end = _next.gameObject.transform.position;
         float step = 0.01f;
         float t = 0.0f;
+        
+        _current = _next;
+        _journeyParts.Add(_current.GetAudioPoint().region);
+        _uiController.ShowJourneyText(GetJourneyText(), lineColor);
 
         _lineRenderer.positionCount = _step;
         _lineRenderer.SetPosition(_step - 1, start);
@@ -62,8 +89,6 @@ public class Constellation: MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
 
-        _current = _next;
-        
         if(IsFinished())
         {
             RevealStar(_current);
