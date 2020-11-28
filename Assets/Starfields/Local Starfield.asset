@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da90448a6f2394641809aa8eb14d1dcc, type: 3}
+  m_Name: Local Starfield
+  m_EditorClassIdentifier: 
+  jsonFile: {fileID: 4900000, guid: a59babcaa89cb4f1f90c8f19cb5922a8, type: 3}

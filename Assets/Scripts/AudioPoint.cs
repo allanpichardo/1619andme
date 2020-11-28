@@ -1,29 +1,36 @@
-﻿using SQLite4Unity3d;
+﻿using System;
+using SQLite4Unity3d;
 using UnityEditor;
 using UnityEngine;
 
-public class AudioPoint  {
+public class AudioPoint
+{
 
-    [PrimaryKey, AutoIncrement]
-    public int id { get; set; }
-    public float x { get; set; }
-    public float y { get; set; }
-    public float z { get; set; }
-    public string region { get; set; }
+    public int id;
+    public float x;
+    public float y;
+    public float z;
+    public string origin;
+    public string url;
 
-//    public AudioClip GetAudioClip()
-//    {
-//        return AssetDatabase.LoadAssetAtPath<AudioClip>(string.Format("Assets/StreamingAssets/sounds/{0}.wav", id));
-//    }
-
+    public AudioPoint(Starfield.Response.Point point)
+    {
+        id = point.id;
+        x = point.x;
+        y = point.y;
+        z = point.z;
+        origin = point.origin;
+        url = point.url;
+    }
+    
     public Vector3 GetPosition(int spacing)
     {
-        return new Vector3(x * spacing, y * spacing / 2.0f, z * spacing);
+        return (new Vector3(Mathf.Abs(x), Mathf.Abs(y) / 4.0f, Mathf.Abs(z)) * spacing) + (Vector3.up * 1.0f);
     }
 
     public override string ToString ()
     {
-        return string.Format ("[Point: id={0}, x={1},  y={2}, z={3}, region={4}]", id, x, y, z, region);
+        return string.Format ("[Point: id={0}, x={1},  y={2}, z={3}, origin={4}]", id, x, y, z, origin);
     }
 
     public override bool Equals(object obj)
@@ -44,13 +51,10 @@ public class AudioPoint  {
 
     public bool IsInAfrica()
     {
-        string[] africa =
-        {
-            "Akan", "Benin", "Fulani", "Hausa", "Igbo", "Kanem", "Kangaba", "Kongo", "Mali", "Mande", "Wolof", "Yoruba"
-        };
+        string[] africa = {"Senegal", "Ghana", "Angola", "Benin", "Nigeria"};
         foreach (string nation in africa)
         {
-            if (region == nation)
+            if (origin == nation)
             {
                 return true;
             }

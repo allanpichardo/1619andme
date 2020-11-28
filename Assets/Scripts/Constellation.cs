@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -51,7 +50,7 @@ public class Constellation: MonoBehaviour
         _lineRenderer.positionCount = _step;
         _current = stars.Dequeue();
         _lineRenderer.SetPosition(_step - 1, _current.gameObject.transform.position);
-        _journeyParts.Add(_current.GetAudioPoint().region);
+        _journeyParts.Add(_current.GetAudioPoint().origin);
         
         ContinueSequence();
     }
@@ -76,7 +75,7 @@ public class Constellation: MonoBehaviour
         float t = 0.0f;
         
         _current = _next;
-        _journeyParts.Add(_current.GetAudioPoint().region);
+        _journeyParts.Add(_current.GetAudioPoint().origin);
         _uiController.ShowJourneyText(GetJourneyText(), lineColor);
 
         _lineRenderer.positionCount = _step;

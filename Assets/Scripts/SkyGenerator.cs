@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class SkyGenerator : MonoBehaviour, Constellation.CompletionListener
+public class SkyGenerator : MonoBehaviour, Constellation.CompletionListener, DataService.IPathListener
 {
-    private DataService _dataService;
     private Dictionary<int, Star> _starScape;
     private LineRenderer _lineRenderer;
     private List<Constellation> _constellations;
 
+    public Starfield starfieldSource;
     public AudioSource musicSource;
     public GameObject constellationPrefab;
     public GameObject starPrefab;
@@ -18,10 +18,9 @@ public class SkyGenerator : MonoBehaviour, Constellation.CompletionListener
     {
         _constellations = new List<Constellation>();
         _lineRenderer = GetComponent<LineRenderer>();
-        _dataService = new DataService("1619.db");
         _starScape = new Dictionary<int, Star>();
         
-        foreach (AudioPoint audioPoint in _dataService.GetAudioPoints())
+        foreach (AudioPoint audioPoint in starfieldSource.GetAudioPoints())
         {
             AddToSkyscape(audioPoint);
         }
@@ -52,24 +51,14 @@ public class SkyGenerator : MonoBehaviour, Constellation.CompletionListener
         {
             if (!star.GetAudioPoint().IsInAfrica())
             {
-                constellation = Instantiate(constellationPrefab, this.transform).GetComponent<Constellation>();
-                constellation.SetPath(GeneratePath(star));
-                constellation.SetCompletionListener(this);
-                _constellations.Add(constellation);
+                GeneratePath(star);
             }
         }
     }
 
-    public Queue<Star> GeneratePath(Star start)
+    public void GeneratePath(Star start)
     {
-        Queue<AudioPoint> path = _dataService.GetPath(start.GetAudioPoint(), pathLength);
-        Queue<Star> starPath = new Queue<Star>();
-        foreach (AudioPoint audioPoint in path)
-        {
-            starPath.Enqueue(_starScape[audioPoint.id]);
-        }
-
-        return starPath;
+        StartCoroutine(DataService.GetPath(start.GetAudioPoint(), this, pathLength));
     }
     
     private void AddToSkyscape(AudioPoint audioPoint, bool skipDictionary = false)
@@ -96,5 +85,19 @@ public class SkyGenerator : MonoBehaviour, Constellation.CompletionListener
     public void OnFinished(Constellation constellation)
     {
         _constellations.Remove(constellation);
+    }
+
+    public void OnPath(Queue<AudioPoint> path)
+    {
+        Queue<Star> starPath = new Queue<Star>();
+        foreach (AudioPoint audioPoint in path)
+        {
+            starPath.Enqueue(_starScape[audioPoint.id]);
+        }
+
+        Constellation constellation = Instantiate(constellationPrefab, this.transform).GetComponent<Constellation>();
+        constellation.SetPath(starPath);
+        constellation.SetCompletionListener(this);
+        _constellations.Add(constellation);
     }
 }
