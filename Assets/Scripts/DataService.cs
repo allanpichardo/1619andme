@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Security.Policy;
+using Oculus.Platform;
+using UnityEditor;
 using UnityEngine.Networking;
 
 public class DataService: ScriptableObject  {
@@ -51,6 +53,7 @@ public class DataService: ScriptableObject  {
 	public static void GetStarfield(IStarfieldListener listener, int limit = 100)
 	{
 		string url = GetUrl(ENDPOINT_STARFIELD, limit.ToString());
+		Debug.Log(string.Format("Getting Starfield from {0}", url));
 		GetRequest(url, listener, limit);
 	}
 

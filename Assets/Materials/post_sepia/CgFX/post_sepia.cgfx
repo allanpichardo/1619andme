@@ -1,0 +1,170 @@
+/*********************************************************************NVMH3****
+*******************************************************************************
+$Revision: #3 $
+
+Copyright NVIDIA Corporation 2008
+TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THIS SOFTWARE IS PROVIDED
+*AS IS* AND NVIDIA AND ITS SUPPLIERS DISCLAIM ALL WARRANTIES, EITHER EXPRESS
+OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS FOR A PARTICULAR PURPOSE.  IN NO EVENT SHALL NVIDIA OR ITS SUPPLIERS
+BE LIABLE FOR ANY SPECIAL, INCIDENTAL, INDIRECT, OR CONSEQUENTIAL DAMAGES
+WHATSOEVER (INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOSS OF BUSINESS PROFITS,
+BUSINESS INTERRUPTION, LOSS OF BUSINESS INFORMATION, OR ANY OTHER PECUNIARY
+LOSS) ARISING OUT OF THE USE OF OR INABILITY TO USE THIS SOFTWARE, EVEN IF
+NVIDIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+
+% Convert the current scene to monochrome with "sepia" toning
+
+keywords: image_processing color_conversion
+
+
+
+To learn more about shading, shaders, and to bounce ideas off other shader
+    authors and users, visit the NVIDIA Shader Library Forums at:
+
+    http://developer.nvidia.com/forums/
+
+*******************************************************************************
+******************************************************************************/
+
+/*****************************************************************/
+/*** HOST APPLICATION IDENTIFIERS ********************************/
+/*** Potentially predefined by varying host environments *********/
+/*****************************************************************/
+
+// #define _XSI_		/* predefined when running in XSI */
+
+#ifndef FXCOMPOSER_VERSION	/* for very old versions */
+#define FXCOMPOSER_VERSION 180
+#endif /* FXCOMPOSER_VERSION */
+
+// #define FLIP_TEXTURE_Y	/* Different in OpenGL & DirectX */
+
+/*****************************************************************/
+/*** EFFECT-SPECIFIC CODE BEGINS HERE ****************************/
+/*****************************************************************/
+
+//
+// #define this macro to permit reading of COLLADA-FX 
+//   shared-surface render targets
+//
+// #define SHARED_BG_IMAGE
+
+#include "include/Quad.cgh"
+
+float Script : STANDARDSGLOBAL <
+    string UIWidget = "none";
+    string ScriptClass = "scene";
+    string ScriptOrder = "postprocess";
+    string ScriptOutput = "color";
+    string Script = "Technique=Main;";
+> = 0.8;
+
+// color and depth used for full-screen clears
+
+float4 gClearColor <
+    string UIWidget = "Color";
+    string UIName = "Background";
+> = {0,0,0,0};
+
+float gClearDepth <string UIWidget = "none";> = 1.0;
+
+///////////////////////////////////////////////////////////
+/////////////////////////////////////// Tweakables ////////
+///////////////////////////////////////////////////////////
+
+float gDesat <
+    string UIWidget = "slider";
+    float UIMin = 0.0f;
+    float UIMax = 1.0f;
+    float UIStep = 0.01f;
+    string UIName = "Desaturation";
+> = 0.5f;
+
+float gToned <
+    string UIWidget = "slider";
+    float UIMin = 0.0f;
+    float UIMax = 1.0f;
+    float UIStep = 0.01f;
+    string UIName = "Toning";
+> = 1.0f;
+
+float3 gLightColor <
+    string UIWidget = "color";
+    string UIName = "Paper Tone";
+> = {1,0.9,0.5};
+
+float3 gDarkColor <
+    string UIWidget = "color";
+    string UIName = "Stain Tone";
+> = {0.2,0.05,0};
+
+///////////////////////////////////////////////////////////
+/////////////////////////////////////// Textures //////////
+///////////////////////////////////////////////////////////
+
+DECLARE_QUAD_TEX(gSceneTexture,gSceneSampler,"A8R8G8B8")
+DECLARE_QUAD_DEPTH_BUFFER(DepthBuffer,"D24S8")
+
+//////////////////////////////////////////////////////
+/////////////////////////////////// pixel shader /////
+//////////////////////////////////////////////////////
+
+QUAD_REAL4 sepiaPS(QuadVertexOutput IN,
+		    uniform sampler2D SceneSampler,
+		    uniform float Desat,
+		    uniform float Toned,
+		    uniform float3 LightColor,
+		    uniform float3 DarkColor
+) : COLOR {   
+    QUAD_REAL3 scnColor = LightColor * tex2D(SceneSampler, IN.UV).xyz;
+    QUAD_REAL3 grayXfer = QUAD_REAL3(0.3,0.59,0.11);
+    QUAD_REAL gray = dot(grayXfer,scnColor);
+    QUAD_REAL3 muted = lerp(scnColor,gray.xxx,Desat);
+    QUAD_REAL3 sepia = lerp(DarkColor,LightColor,gray);
+    QUAD_REAL3 result = lerp(muted,sepia,Toned);
+    return QUAD_REAL4(result,1);
+}
+
+///////////////////////////////////////
+/// TECHNIQUES ////////////////////////
+///////////////////////////////////////
+
+technique Main < string Script =
+#ifndef SHARED_BG_IMAGE
+    "RenderColorTarget0=gSceneTexture;"
+    "RenderDepthStencilTarget=DepthBuffer;"
+    "ClearSetColor=gClearColor;"
+    "ClearSetDepth=gClearDepth;"
+	"Clear=Color;"
+	"Clear=Depth;"
+    "ScriptExternal=Color;" // calls all "previous" techniques & materials
+    "Pass=PostP0;";
+#else /* defined(SHARED_BG_IMAGE)  - no nead to create one, COLLADA has done it for us  */
+    "ClearSetColor=gClearColor;"
+    "ClearSetDepth=gClearDepth;"
+	"Clear=Color;"
+	"Clear=Depth;"
+    "Pass=PostP0;";
+#endif /* SHARED_BG_IMAGE */
+> {
+    pass PostP0 < string Script =
+	"RenderColorTarget0=;"
+	"RenderDepthStencilTarget=;"
+	"Draw=Buffer;";
+    > {
+	VertexProgram = compile vp40 ScreenQuadVS2(QuadTexelOffsets);
+		DepthTestEnable = false;
+		DepthMask = false;
+		BlendEnable = false;
+		CullFaceEnable = false;
+		DepthFunc = LEqual;
+	FragmentProgram = compile fp40 sepiaPS(gSceneSampler,
+						gDesat,gToned,
+						gLightColor,gDarkColor);
+    }
+}
+
+//////////////////////////////////////////////
+/////////////////////////////////////// eof //
+//////////////////////////////////////////////

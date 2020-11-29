@@ -23,8 +23,8 @@ Material:
   m_Name: Star
   m_Shader: {fileID: -6465566751694194690, guid: 39ef7440a99704222a9835e0ef96e61d,
     type: 3}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 4
+  m_ShaderKeywords: _COMPOSITE_TYPE_ADDITIVE
+  m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -65,6 +65,7 @@ Material:
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
+    - _COMPOSITE_TYPE: 0
     - _Cull: 2
     - _Cutoff: 0.5
     - _DstBlend: 0
@@ -90,4 +91,6 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _Parameter: {r: 2.3, g: 2.86, b: 1.52, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+  m_BuildTextureStacks: []

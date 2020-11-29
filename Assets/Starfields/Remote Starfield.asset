@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Remote Starfield
   m_EditorClassIdentifier: 
   useRemote: 1
-  size: 1000
+  size: 200
   jsonFile: {fileID: 0}

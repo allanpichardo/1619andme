@@ -10,7 +10,7 @@ Material:
   m_Name: Material_IslandWater
   m_Shader: {fileID: 4800000, guid: ae0b03949aae86f478be2838ee94b0e8, type: 3}
   m_ShaderKeywords: 
-  m_LightmapFlags: 4
+  m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: 3000
@@ -103,7 +103,7 @@ Material:
     - Vector1_72F0D5FC: 0.013
     - Vector1_730BBE62: 0.799
     - Vector1_770B5A60: 1.67
-    - Vector1_7FB5584F: 0.5
+    - Vector1_7FB5584F: 0.744
     - Vector1_7FD4B9D0: 1
     - Vector1_8403193C: 1.01
     - Vector1_8BF7F1BF: 1
@@ -138,7 +138,7 @@ Material:
     - Vector1_F4A73BA: 0.77
     - Vector1_F68B8AAF: 1
     - Vector1_F8EFDF11: 17.82
-    - Vector1_F976D8BD: 0.5
+    - Vector1_F976D8BD: 0.646
     - Vector1_F9DF03AF: 35
     - Vector1_FA3225CB: 4.99
     - Vector1_FABC47E4: 0.767
@@ -168,10 +168,10 @@ Material:
     - Color_277E2D14: {r: 1, g: 1, b: 1, a: 1}
     - Color_3974F997: {r: 0.14509788, g: 0.9490196, b: 1, a: 1}
     - Color_3CACD0BA: {r: 0, g: 0.13437016, b: 0.2924528, a: 1}
-    - Color_936A8730: {r: 0.09064614, g: 0.15702139, b: 0.1981132, a: 1}
+    - Color_936A8730: {r: 0.23673905, g: 0.32211515, b: 0.3773585, a: 0.48235294}
     - Color_ACACFC30: {r: 0.6127626, g: 0.92731404, b: 0.9622641, a: 1}
-    - Color_D70B9788: {r: 0.21176472, g: 0.35686275, b: 0.49803925, a: 1}
-    - Color_E63B4CEF: {r: 0.0045389733, g: 0.14327396, b: 0.3207547, a: 1}
+    - Color_D70B9788: {r: 0.42172483, g: 0.54854935, b: 0.764151, a: 0.48235294}
+    - Color_E63B4CEF: {r: 0.0022249965, g: 0.2108797, b: 0.4716981, a: 1}
     - Vector2_1000B2F1: {r: 0.1, g: 1, b: 0, a: 0}
     - Vector2_113ECD47: {r: 0.2, g: 0.2, b: 0, a: 0}
     - Vector2_7922229F: {r: 0.38, g: 1, b: 0, a: 0}
@@ -182,3 +182,4 @@ Material:
     - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+  m_BuildTextureStacks: []

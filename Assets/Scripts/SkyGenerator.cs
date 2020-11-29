@@ -16,6 +16,8 @@ public class SkyGenerator : MonoBehaviour, Constellation.CompletionListener, Dat
     // Start is called before the first frame update
     void Start()
     {
+        starfieldSource.Initialize();
+        
         _constellations = new List<Constellation>();
         _lineRenderer = GetComponent<LineRenderer>();
         _starScape = new Dictionary<int, Star>();

@@ -29,12 +29,7 @@ public class Starfield : ScriptableObject, DataService.IStarfieldListener
 
     private List<AudioPoint> audioPoints;
 
-    public List<AudioPoint> GetAudioPoints()
-    {
-        return audioPoints;
-    }
-
-    private void OnEnable()
+    public void Initialize()
     {
         if (useRemote)
         {
@@ -45,9 +40,13 @@ public class Starfield : ScriptableObject, DataService.IStarfieldListener
             Response res = JsonUtility.FromJson<Response>(jsonFile.text);
             PopulateAudioPoints(res);
         }
-        
     }
 
+    public List<AudioPoint> GetAudioPoints()
+    {
+        return audioPoints;
+    }
+    
     private void PopulateAudioPoints(Response res)
     {
         audioPoints = new List<AudioPoint>();
