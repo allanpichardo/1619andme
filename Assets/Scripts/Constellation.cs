@@ -5,6 +5,11 @@ using UnityEngine;
 [RequireComponent(typeof(LineRenderer))]
 public class Constellation: MonoBehaviour
 {
+    public interface IAudioCallback
+    {
+        void EnqueueAudioTrack(string url, int track);
+    }
+    
     private static readonly int Color45Edb685 = Shader.PropertyToID("Color_45EDB685");
     public float speed = 1.0f;
     public float fadeTime = 20.0f;
@@ -18,6 +23,7 @@ public class Constellation: MonoBehaviour
     private Star _current;
     private Star _next;
     private UIController _uiController;
+    private IAudioCallback _audioCallback;
 
     private string GetJourneyText()
     {
@@ -37,12 +43,12 @@ public class Constellation: MonoBehaviour
         return text;
     }
     
-    public void SetPath(Queue<Star> stars)
+    public void SetPath(Queue<Star> stars, IAudioCallback callback)
     {
         _path = stars;
         _step = 0;
         _max = stars.Count;
-
+        
         _journeyParts = new List<string>();
         _uiController = FindObjectOfType<UIController>();
         _lineRenderer = GetComponent<LineRenderer>();
@@ -51,6 +57,7 @@ public class Constellation: MonoBehaviour
         _current = stars.Dequeue();
         _lineRenderer.SetPosition(_step - 1, _current.gameObject.transform.position);
         _journeyParts.Add(_current.GetAudioPoint().origin);
+        _audioCallback = callback;
         
         ContinueSequence();
     }
@@ -60,12 +67,16 @@ public class Constellation: MonoBehaviour
         _next = GetNext();
         _step++;
         StartCoroutine(DrawLineSegment());
+
+        if (_audioCallback != null)
+        {
+            _audioCallback.EnqueueAudioTrack(_current.GetAudioPoint().url, _step - 1);
+        }
     }
 
     private IEnumerator DrawLineSegment()
     {
         float colorInterp = ((_step - 1.0f) / _max);
-        Debug.Log(colorInterp);
         Color lineColor = Color.Lerp(Color.white, Color.yellow, colorInterp);
         SetLineColor(lineColor);
         
@@ -93,6 +104,10 @@ public class Constellation: MonoBehaviour
             RevealStar(_current);
             _completionListener.OnFinished(this);
             BeginFadeSequence();
+        }
+        else
+        {
+            ContinueSequence();
         }
     }
 

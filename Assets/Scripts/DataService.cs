@@ -53,7 +53,6 @@ public class DataService: ScriptableObject  {
 	public static void GetStarfield(IStarfieldListener listener, int limit = 100)
 	{
 		string url = GetUrl(ENDPOINT_STARFIELD, limit.ToString());
-		Debug.Log(string.Format("Getting Starfield from {0}", url));
 		GetRequest(url, listener, limit);
 	}
 
@@ -70,7 +69,7 @@ public class DataService: ScriptableObject  {
 
 			if (webRequest.isNetworkError)
 			{
-				Debug.LogError("Path Error: " + webRequest.error);
+				Debug.LogError("DataService Path Error: " + webRequest.error);
 			}
 			else
 			{
@@ -78,16 +77,17 @@ public class DataService: ScriptableObject  {
 				if (response.success && listener != null)
 				{
 					Queue<AudioPoint>  path = new Queue<AudioPoint>();
-					path.Enqueue(start);
 					for (int i = 0; i < length; i++)
 					{
-						path.Enqueue(response.constellation[i]);
+						path.Enqueue(new AudioPoint(response.constellation[i]));
 					}
-					path.Enqueue(response.constellation.Last());
+					path.Enqueue(new AudioPoint(response.constellation.Last()));
+					
+					listener.OnPath(path);
 				}
 				else
 				{
-					Debug.LogError("Couldn't get path");
+					Debug.LogError("DataService: Couldn't get path");
 				}
 			}
 		}

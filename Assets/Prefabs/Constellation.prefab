@@ -44,8 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 190484eb48e07476f989f8ba22020d9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.5
-  fadeTime: 90
+  speed: 0.1
+  fadeTime: 900
 --- !u!120 &730356429727173026
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -61,6 +61,7 @@ LineRenderer:
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

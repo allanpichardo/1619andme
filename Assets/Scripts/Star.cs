@@ -13,7 +13,6 @@ public class Star : MonoBehaviour
     private SkyGenerator _skyGenerator;
     private Animator _animator;
     
-    public AudioSource audioSource;
     public float timeToActivation = 1.0f;
     
     private bool _isActivating = false;
@@ -52,7 +51,6 @@ public class Star : MonoBehaviour
             case InteractableState.ActionState:
                 OnActivate();
                 break;
-            case InteractableState.Default:
             default:
                 OnPointerExit();
                 break;
@@ -69,35 +67,6 @@ public class Star : MonoBehaviour
         _isActivating = true;
         StartCoroutine(ActivationTimer());
     }
-
-    IEnumerator PlayAudio()
-    {
-        using (UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip(_audioPoint.url, AudioType.MPEG))
-        {
-            yield return www.Send();
-
-            if (www.isNetworkError)
-            {
-                Debug.LogError(www.error);
-            }
-            else
-            {
-                AudioClip audioClip = DownloadHandlerAudioClip.GetContent(www);
-                audioSource.PlayOneShot(audioClip, 0.25f);
-            }
-        }
-    }
-
-    public void Play()
-    {
-        if (audioSource.isPlaying)
-        {
-            audioSource.Stop();
-        }
-        StartCoroutine(PlayAudio());
-    }
-
-    
 
     private IEnumerator ActivationTimer()
     {
@@ -118,7 +87,6 @@ public class Star : MonoBehaviour
         if (_isActivating)
         {
             _skyGenerator.OnLookAtStar(this);
-            Play();
             _isActivating = false;
         }
     }

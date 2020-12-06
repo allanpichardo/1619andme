@@ -1,19 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
+using UnityEngine.Networking;
 
-public class SkyGenerator : MonoBehaviour, Constellation.CompletionListener, DataService.IPathListener
+public class SkyGenerator : MonoBehaviour, Constellation.CompletionListener, DataService.IPathListener, Constellation.IAudioCallback
 {
     private Dictionary<int, Star> _starScape;
     private LineRenderer _lineRenderer;
     private List<Constellation> _constellations;
+    private Dictionary<int, AudioSource> _audioSources;
 
     public Starfield starfieldSource;
-    public AudioSource musicSource;
     public GameObject constellationPrefab;
     public GameObject starPrefab;
     public int spacing = 100;
     public int pathLength = 10;
-    // Start is called before the first frame update
+    
+    public AudioMixer audioMixer;
+    public float crossfadeDuration = 4.0f;
+    
     void Start()
     {
         starfieldSource.Initialize();
@@ -21,6 +27,7 @@ public class SkyGenerator : MonoBehaviour, Constellation.CompletionListener, Dat
         _constellations = new List<Constellation>();
         _lineRenderer = GetComponent<LineRenderer>();
         _starScape = new Dictionary<int, Star>();
+        _audioSources = new Dictionary<int, AudioSource>();
         
         foreach (AudioPoint audioPoint in starfieldSource.GetAudioPoints())
         {
@@ -71,7 +78,6 @@ public class SkyGenerator : MonoBehaviour, Constellation.CompletionListener, Dat
         Star star = thisStar.GetComponent<Star>();
         star.SetAudioPoint(audioPoint);
         star.SetSkyGenerator(this);
-        star.audioSource = musicSource;
 
         if (star.GetAudioPoint().IsInAfrica())
         {
@@ -87,6 +93,7 @@ public class SkyGenerator : MonoBehaviour, Constellation.CompletionListener, Dat
     public void OnFinished(Constellation constellation)
     {
         _constellations.Remove(constellation);
+        audioMixer.FindSnapshot("Start").TransitionTo(crossfadeDuration);
     }
 
     public void OnPath(Queue<AudioPoint> path)
@@ -94,12 +101,48 @@ public class SkyGenerator : MonoBehaviour, Constellation.CompletionListener, Dat
         Queue<Star> starPath = new Queue<Star>();
         foreach (AudioPoint audioPoint in path)
         {
-            starPath.Enqueue(_starScape[audioPoint.id]);
+            if (_starScape.ContainsKey(audioPoint.id))
+            {
+                starPath.Enqueue(_starScape[audioPoint.id]);
+            }
+            else
+            {
+                AddToSkyscape(audioPoint);
+                starPath.Enqueue(_starScape[audioPoint.id]);
+            }
         }
 
         Constellation constellation = Instantiate(constellationPrefab, this.transform).GetComponent<Constellation>();
-        constellation.SetPath(starPath);
         constellation.SetCompletionListener(this);
+        constellation.SetPath(starPath, this);
         _constellations.Add(constellation);
+    }
+    
+    IEnumerator PlayAudio(AudioSource source, string url, string snapshot)
+    {
+        using (UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip(url, AudioType.MPEG))
+        {
+            yield return www.Send();
+
+            if (www.isNetworkError)
+            {
+                Debug.LogError(www.error);
+            }
+            else
+            {
+                AudioClip audioClip = DownloadHandlerAudioClip.GetContent(www);
+                source.PlayOneShot(audioClip, 1.0f);
+                audioMixer.FindSnapshot(snapshot).TransitionTo(crossfadeDuration);
+            }
+        }
+    }
+
+    public void EnqueueAudioTrack(string url, int track)
+    {
+        Debug.Log($"SkyGenerator: enqueue {url} for track {track}");
+        AudioSource source = gameObject.AddComponent<AudioSource>();
+        source.outputAudioMixerGroup = audioMixer.FindMatchingGroups($"Step {track}")[0];
+        _audioSources[track] = source;
+        StartCoroutine(PlayAudio(source, url, $"{track}"));
     }
 }
