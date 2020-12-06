@@ -21,7 +21,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - Texture2D_DC9BBA4F:
-        m_Texture: {fileID: 2800000, guid: f983094b80e0c49c08f09c88c77e6cf3, type: 3}
+        m_Texture: {fileID: 2800000, guid: 0e42600fb7e8b40cdb72feb801d096b3, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _FlowMap:
@@ -47,11 +47,11 @@ Material:
     m_Floats:
     - Vector1_510559CC: 7
     - Vector1_A0CB94D4: 3
-    - Vector1_ADBB2A32: 0.8
-    - Vector1_B6B7A5F1: 0.5
+    - Vector1_ADBB2A32: 0.84
+    - Vector1_B6B7A5F1: 0.89
     - Vector1_CB6771EA: 20
     - Vector1_DBC37A: 12
-    - Vector1_E057E3FB: 0.005
+    - Vector1_E057E3FB: 0.03
     - Vector1_FE05FB3A: 0.02
     - _FalloffDepth: 0.5
     - _FalloffStrength: 0.25
@@ -73,7 +73,7 @@ Material:
     - _WorldSpaceNrm: 0
     m_Colors:
     - Color_71CBC5B0: {r: 0.009033469, g: 0.1347609, b: 0.2735849, a: 0}
-    - Color_A75DA3EA: {r: 0.007843137, g: 0.13801701, b: 0.50980395, a: 0}
+    - Color_A75DA3EA: {r: 0, g: 0.32961357, b: 0.9811321, a: 0}
     - _DeepColor: {r: 0.12999997, g: 0.56999993, b: 0.73, a: 1}
     - _FoamColor: {r: 1, g: 1, b: 1, a: 1}
     - _ShallowColor: {r: 0.65, g: 0.9, b: 1, a: 1}

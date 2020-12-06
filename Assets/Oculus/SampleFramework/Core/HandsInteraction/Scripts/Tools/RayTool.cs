@@ -28,7 +28,7 @@ namespace OculusSampleFramework
 
 		[SerializeField] private RayToolView _rayToolView = null;
 		[Range(0.0f, 45.0f)] [SerializeField] private float _coneAngleDegrees = 20.0f;
-		[SerializeField] private float _farFieldMaxDistance = 5f;
+		[SerializeField] private float _farFieldMaxDistance = 10000.0f;
 
 		public override InteractableToolTags ToolTags
 		{
@@ -238,7 +238,7 @@ namespace OculusSampleFramework
 			Interactable interactableCastedAgainst = null;
 
 			// hit order not guaranteed, so find closest
-			int numHits = Physics.RaycastNonAlloc(new Ray(rayOrigin, rayDirection), _primaryHits, Mathf.Infinity);
+			int numHits = Physics.RaycastNonAlloc(new Ray(rayOrigin, rayDirection), _primaryHits, _farFieldMaxDistance);
 			float minDistance = 0.0f;
 			for (int hitIndex = 0; hitIndex < numHits; hitIndex++)
 			{

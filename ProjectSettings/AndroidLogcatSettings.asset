@@ -1,13 +1,86 @@
 {
     "m_SelectedDeviceId": "1WMHH811SM0397",
     "m_SelectedPackage": {
-        "deviceId": "",
-        "name": "",
-        "processId": 0,
+        "deviceId": "1WMHH811SM0397",
+        "name": "com.allanpichardo.ftdg",
+        "processId": 26368,
         "exited": false
     },
     "m_SelectedPriority": 0,
-    "m_KnownPackagesForSerialization": [],
+    "m_KnownPackagesForSerialization": [
+        {
+            "deviceId": "1WMHH811SM0397",
+            "name": "com.oculus.vrshell",
+            "processId": 1819,
+            "exited": false
+        },
+        {
+            "deviceId": "1WMHH811SM0397",
+            "name": "com.allanpichardo.ftdg",
+            "processId": 6080,
+            "exited": true
+        },
+        {
+            "deviceId": "1WMHH811SM0397",
+            "name": "com.allanpichardo.ftdg",
+            "processId": 8344,
+            "exited": true
+        },
+        {
+            "deviceId": "1WMHH811SM0397",
+            "name": "com.allanpichardo.ftdg",
+            "processId": 9784,
+            "exited": true
+        },
+        {
+            "deviceId": "1WMHH811SM0397",
+            "name": "com.allanpichardo.ftdg",
+            "processId": 10610,
+            "exited": true
+        },
+        {
+            "deviceId": "1WMHH811SM0397",
+            "name": "com.allanpichardo.ftdg",
+            "processId": 13550,
+            "exited": true
+        },
+        {
+            "deviceId": "1WMHH811SM0397",
+            "name": "com.allanpichardo.ftdg",
+            "processId": 14741,
+            "exited": false
+        },
+        {
+            "deviceId": "1WMHH811SM0397",
+            "name": "com.allanpichardo.ftdg",
+            "processId": 16250,
+            "exited": false
+        },
+        {
+            "deviceId": "1WMHH811SM0397",
+            "name": "com.allanpichardo.ftdg",
+            "processId": 21619,
+            "exited": false
+        },
+        {
+            "deviceId": "1WMHH811SM0397",
+            "name": "com.allanpichardo.ftdg",
+            "processId": 23764,
+            "exited": false
+        },
+        {
+            "deviceId": "1WMHH811SM0397",
+            "name": "com.allanpichardo.ftdg",
+            "processId": 25843,
+            "exited": false
+        },
+        {
+            "deviceId": "1WMHH811SM0397",
+            "name": "com.allanpichardo.ftdg",
+            "processId": 26368,
+            "exited": false
+        }
+    ],
     "m_Tags": {
         "m_Entries": [
             {
@@ -58,7 +131,7 @@
         "MemoryGroup": 1,
         "Behavior": 1
     },
-    "m_Filter": "",
+    "m_Filter": "pinch",
     "m_FilterIsRegularExpression": false,
     "m_SymbolPaths": []
 }
