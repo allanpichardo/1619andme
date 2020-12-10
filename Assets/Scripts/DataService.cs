@@ -92,6 +92,25 @@ public class DataService: ScriptableObject  {
 			}
 		}
 	}
+
+	public static IEnumerator DrawLineToMap(AudioPoint start, AudioPoint end)
+	{
+		string url = $"https://ftdg.allanpichardo.com/segment?line={start.origin},{end.origin}";
+		Debug.Log($"DataService Draw Line URL {url}");
+		using (UnityWebRequest webRequest = UnityWebRequest.Post(url, ""))
+		{
+			yield return webRequest.SendWebRequest();
+
+			if (webRequest.isNetworkError)
+			{
+				Debug.LogError("DataService Draw Line Error: " + webRequest.error);
+			}
+			else
+			{
+				Debug.Log($"DataService Line Segment Response: {webRequest.downloadHandler.text}");
+			}
+		}
+	}
 	
 	private static void GetRequest(string uri, IStarfieldListener listener, int length = 5)
 	{

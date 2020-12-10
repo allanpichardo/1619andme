@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "1WMHH811SM0397",
         "name": "com.allanpichardo.ftdg",
-        "processId": 12681,
+        "processId": 16009,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -11,37 +11,43 @@
         {
             "deviceId": "1WMHH811SM0397",
             "name": "com.allanpichardo.ftdg",
-            "processId": 9199,
+            "processId": 14677,
             "exited": true
         },
         {
             "deviceId": "1WMHH811SM0397",
             "name": "com.allanpichardo.ftdg",
-            "processId": 10408,
+            "processId": 21905,
             "exited": true
         },
         {
             "deviceId": "1WMHH811SM0397",
             "name": "com.allanpichardo.ftdg",
-            "processId": 27307,
+            "processId": 4098,
             "exited": true
         },
         {
             "deviceId": "1WMHH811SM0397",
             "name": "com.allanpichardo.ftdg",
-            "processId": 11075,
+            "processId": 7828,
             "exited": true
         },
         {
             "deviceId": "1WMHH811SM0397",
             "name": "com.allanpichardo.ftdg",
-            "processId": 12170,
+            "processId": 11863,
             "exited": true
         },
         {
             "deviceId": "1WMHH811SM0397",
             "name": "com.allanpichardo.ftdg",
-            "processId": 12681,
+            "processId": 14490,
+            "exited": false
+        },
+        {
+            "deviceId": "1WMHH811SM0397",
+            "name": "com.allanpichardo.ftdg",
+            "processId": 16009,
             "exited": false
         }
     ],
@@ -95,7 +101,7 @@
         "MemoryGroup": 1,
         "Behavior": 1
     },
-    "m_Filter": "Sky",
+    "m_Filter": "DataService",
     "m_FilterIsRegularExpression": false,
     "m_SymbolPaths": []
 }

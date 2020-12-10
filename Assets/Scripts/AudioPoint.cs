@@ -22,7 +22,7 @@ public class AudioPoint
     
     public Vector3 GetPosition(int spacing)
     {
-        return (new Vector3(x / 2.0f, Mathf.Abs(y) / 4.0f, z / 2.0f) * spacing) + (Vector3.up * 2.0f);
+        return (new Vector3(x / 2.0f, Mathf.Abs(y) / 3.0f, z / 2.0f) * spacing) + (Vector3.up * 2.0f);
     }
 
     public override string ToString ()

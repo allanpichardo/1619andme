@@ -59,6 +59,11 @@ public class Constellation: MonoBehaviour
         _journeyParts.Add(_current.GetAudioPoint().origin);
         _audioCallback = callback;
         
+        if (_audioCallback != null)
+        {
+            _audioCallback.EnqueueAudioTrack(_current.GetAudioPoint().url, _step);
+        }
+        
         ContinueSequence();
     }
 
@@ -67,11 +72,6 @@ public class Constellation: MonoBehaviour
         _next = GetNext();
         _step++;
         StartCoroutine(DrawLineSegment());
-
-        if (_audioCallback != null)
-        {
-            _audioCallback.EnqueueAudioTrack(_current.GetAudioPoint().url, _step - 1);
-        }
     }
 
     private IEnumerator DrawLineSegment()
@@ -84,10 +84,12 @@ public class Constellation: MonoBehaviour
         Vector3 end = _next.gameObject.transform.position;
         float step = 0.01f;
         float t = 0.0f;
+
+        yield return DataService.DrawLineToMap(_current.GetAudioPoint(), _next.GetAudioPoint());
         
         _current = _next;
         _journeyParts.Add(_current.GetAudioPoint().origin);
-        _uiController.ShowJourneyText(GetJourneyText(), lineColor);
+        // _uiController.ShowJourneyText(GetJourneyText(), lineColor); //todo: reconsider UI
 
         _lineRenderer.positionCount = _step;
         _lineRenderer.SetPosition(_step - 1, start);
@@ -98,6 +100,8 @@ public class Constellation: MonoBehaviour
             t += Time.deltaTime * speed;
             yield return new WaitForEndOfFrame();
         }
+        
+        _current.OnPointerEnter();
 
         if(IsFinished())
         {
@@ -108,6 +112,11 @@ public class Constellation: MonoBehaviour
         else
         {
             ContinueSequence();
+        }
+        
+        if (_audioCallback != null)
+        {
+            _audioCallback.EnqueueAudioTrack(_current.GetAudioPoint().url, _step);
         }
     }
 

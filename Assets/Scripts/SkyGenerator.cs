@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.Networking;
 
-public class SkyGenerator : MonoBehaviour, Constellation.CompletionListener, DataService.IPathListener, Constellation.IAudioCallback
+public class SkyGenerator : MonoBehaviour, Constellation.CompletionListener, DataService.IPathListener, Constellation.IAudioCallback, Starfield.IStarfieldListener
 {
     private Dictionary<int, Star> _starScape;
     private LineRenderer _lineRenderer;
@@ -22,18 +22,12 @@ public class SkyGenerator : MonoBehaviour, Constellation.CompletionListener, Dat
     
     void Start()
     {
-        starfieldSource.Initialize();
-        
         _constellations = new List<Constellation>();
         _lineRenderer = GetComponent<LineRenderer>();
         _starScape = new Dictionary<int, Star>();
         _audioSources = new Dictionary<int, AudioSource>();
         
-        foreach (AudioPoint audioPoint in starfieldSource.GetAudioPoints())
-        {
-            AddToSkyscape(audioPoint);
-        }
-        
+        starfieldSource.Initialize(this);
     }
 
     private Constellation GetActiveConstellation(Star star)
@@ -131,7 +125,7 @@ public class SkyGenerator : MonoBehaviour, Constellation.CompletionListener, Dat
             else
             {
                 AudioClip audioClip = DownloadHandlerAudioClip.GetContent(www);
-                source.PlayOneShot(audioClip, 1.0f);
+                source.PlayOneShot(audioClip, 0.5f);
                 audioMixer.FindSnapshot(snapshot).TransitionTo(crossfadeDuration);
             }
         }
@@ -144,5 +138,13 @@ public class SkyGenerator : MonoBehaviour, Constellation.CompletionListener, Dat
         source.outputAudioMixerGroup = audioMixer.FindMatchingGroups($"Step {track}")[0];
         _audioSources[track] = source;
         StartCoroutine(PlayAudio(source, url, $"{track}"));
+    }
+
+    public void OnStarfield()
+    {
+        foreach (AudioPoint audioPoint in starfieldSource.GetAudioPoints())
+        {
+            AddToSkyscape(audioPoint);
+        }
     }
 }

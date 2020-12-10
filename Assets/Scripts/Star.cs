@@ -99,6 +99,10 @@ public class Star : MonoBehaviour
     public void SetAudioPoint(AudioPoint audioPoint)
     {
         this._audioPoint = audioPoint;
+        if (audioPoint.IsInAfrica())
+        {
+            GetComponent<ButtonController>().enabled = false;
+        }
     }
 
     public void SetColor(Color color)

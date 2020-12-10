@@ -44,8 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 190484eb48e07476f989f8ba22020d9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.1
-  fadeTime: 900
+  speed: 0.075
+  fadeTime: 90
 --- !u!120 &730356429727173026
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -91,7 +91,7 @@ LineRenderer:
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 3.5
+    widthMultiplier: 1
     widthCurve:
       serializedVersion: 2
       m_Curve:

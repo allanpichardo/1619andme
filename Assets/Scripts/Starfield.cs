@@ -6,6 +6,11 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "FTDG/Starfield")]
 public class Starfield : ScriptableObject, DataService.IStarfieldListener
 {
+    public interface IStarfieldListener
+    {
+        void OnStarfield();
+    }
+    
     [Serializable]
     public class Response
     {
@@ -28,9 +33,12 @@ public class Starfield : ScriptableObject, DataService.IStarfieldListener
     public TextAsset jsonFile;
 
     private List<AudioPoint> audioPoints;
+    private IStarfieldListener _listener;
 
-    public void Initialize()
+    public void Initialize(Starfield.IStarfieldListener listener)
     {
+        _listener = listener;
+        
         if (useRemote)
         {
             DataService.GetStarfield(this, size);
@@ -65,6 +73,11 @@ public class Starfield : ScriptableObject, DataService.IStarfieldListener
         else
         {
             Debug.LogError("Unable to get starfield");
+        }
+
+        if (_listener != null)
+        {
+            _listener.OnStarfield();
         }
     }
 }
