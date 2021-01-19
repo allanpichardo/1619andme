@@ -84,10 +84,10 @@ public class SkyGenerator : MonoBehaviour, Constellation.CompletionListener, Dat
         }
     }
 
-    public void OnFinished(Constellation constellation)
+    public void OnFinished(Constellation constellation, int step)
     {
+        StartCoroutine(FadeMixerGroup.StartFade(audioMixer, $"volume {step}", crossfadeDuration, 0.0f));
         _constellations.Remove(constellation);
-        audioMixer.FindSnapshot("Start").TransitionTo(crossfadeDuration);
     }
 
     public void OnPath(Queue<AudioPoint> path)
@@ -112,7 +112,7 @@ public class SkyGenerator : MonoBehaviour, Constellation.CompletionListener, Dat
         _constellations.Add(constellation);
     }
     
-    IEnumerator PlayAudio(AudioSource source, string url, string snapshot)
+    IEnumerator PlayAudio(AudioSource source, string url, int track)
     {
         using (UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip(url, AudioType.MPEG))
         {
@@ -125,8 +125,15 @@ public class SkyGenerator : MonoBehaviour, Constellation.CompletionListener, Dat
             else
             {
                 AudioClip audioClip = DownloadHandlerAudioClip.GetContent(www);
-                source.PlayOneShot(audioClip, 0.5f);
-                audioMixer.FindSnapshot(snapshot).TransitionTo(crossfadeDuration);
+                if (!source.isPlaying)
+                {
+                    source.PlayOneShot(audioClip, 0.5f);
+                }
+                yield return FadeMixerGroup.StartFade(audioMixer, $"volume {track}", crossfadeDuration, 1.0f);
+                if (track > 1)
+                {
+                    yield return FadeMixerGroup.StartFade(audioMixer, $"volume {track - 1}", crossfadeDuration, 0.0f);
+                }
             }
         }
     }
@@ -135,9 +142,10 @@ public class SkyGenerator : MonoBehaviour, Constellation.CompletionListener, Dat
     {
         Debug.Log($"SkyGenerator: enqueue {url} for track {track}");
         AudioSource source = gameObject.AddComponent<AudioSource>();
-        source.outputAudioMixerGroup = audioMixer.FindMatchingGroups($"Step {track}")[0];
+        AudioMixerGroup group = audioMixer.FindMatchingGroups($"Step {track}")[0];
+        source.outputAudioMixerGroup = group;
         _audioSources[track] = source;
-        StartCoroutine(PlayAudio(source, url, $"{track}"));
+        StartCoroutine(PlayAudio(source, url, track));
     }
 
     public void OnStarfield()

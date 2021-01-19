@@ -3,51 +3,195 @@
     "m_SelectedPackage": {
         "deviceId": "1WMHH811SM0397",
         "name": "com.allanpichardo.ftdg",
-        "processId": 16009,
+        "processId": 20508,
         "exited": false
     },
     "m_SelectedPriority": 0,
     "m_KnownPackagesForSerialization": [
         {
             "deviceId": "1WMHH811SM0397",
-            "name": "com.allanpichardo.ftdg",
-            "processId": 14677,
-            "exited": true
-        },
-        {
-            "deviceId": "1WMHH811SM0397",
-            "name": "com.allanpichardo.ftdg",
-            "processId": 21905,
-            "exited": true
-        },
-        {
-            "deviceId": "1WMHH811SM0397",
-            "name": "com.allanpichardo.ftdg",
-            "processId": 4098,
-            "exited": true
-        },
-        {
-            "deviceId": "1WMHH811SM0397",
-            "name": "com.allanpichardo.ftdg",
-            "processId": 7828,
-            "exited": true
-        },
-        {
-            "deviceId": "1WMHH811SM0397",
-            "name": "com.allanpichardo.ftdg",
-            "processId": 11863,
-            "exited": true
-        },
-        {
-            "deviceId": "1WMHH811SM0397",
-            "name": "com.allanpichardo.ftdg",
-            "processId": 14490,
+            "name": "com.oculus.vrshell",
+            "processId": 2985,
             "exited": false
         },
         {
             "deviceId": "1WMHH811SM0397",
             "name": "com.allanpichardo.ftdg",
-            "processId": 16009,
+            "processId": 10785,
+            "exited": true
+        },
+        {
+            "deviceId": "1WMHH811SM0397",
+            "name": "com.allanpichardo.ftdg",
+            "processId": 22367,
+            "exited": true
+        },
+        {
+            "deviceId": "1WMHH811SM0397",
+            "name": "com.allanpichardo.ftdg",
+            "processId": 24706,
+            "exited": true
+        },
+        {
+            "deviceId": "1WMHH811SM0397",
+            "name": "com.allanpichardo.ftdg",
+            "processId": 25657,
+            "exited": true
+        },
+        {
+            "deviceId": "1WMHH811SM0397",
+            "name": "com.allanpichardo.ftdg",
+            "processId": 26256,
+            "exited": true
+        },
+        {
+            "deviceId": "1WMHH811SM0397",
+            "name": "com.allanpichardo.ftdg",
+            "processId": 14064,
+            "exited": true
+        },
+        {
+            "deviceId": "1WMHH811SM0397",
+            "name": "com.allanpichardo.ftdg",
+            "processId": 21373,
+            "exited": false
+        },
+        {
+            "deviceId": "1WMHH811SM0397",
+            "name": "com.allanpichardo.ftdg",
+            "processId": 23603,
+            "exited": false
+        },
+        {
+            "deviceId": "1WMHH811SM0397",
+            "name": "com.allanpichardo.ftdg",
+            "processId": 25687,
+            "exited": false
+        },
+        {
+            "deviceId": "1WMHH811SM0397",
+            "name": "com.allanpichardo.ftdg",
+            "processId": 27930,
+            "exited": false
+        },
+        {
+            "deviceId": "1WMHH811SM0397",
+            "name": "com.allanpichardo.ftdg",
+            "processId": 31086,
+            "exited": false
+        },
+        {
+            "deviceId": "1WMHH811SM0397",
+            "name": "com.allanpichardo.ftdg",
+            "processId": 31444,
+            "exited": false
+        },
+        {
+            "deviceId": "1WMHH811SM0397",
+            "name": "com.allanpichardo.ftdg",
+            "processId": 14144,
+            "exited": true
+        },
+        {
+            "deviceId": "1WMHH811SM0397",
+            "name": "com.allanpichardo.ftdg",
+            "processId": 14749,
+            "exited": false
+        },
+        {
+            "deviceId": "1WMHH811SM0397",
+            "name": "com.allanpichardo.ftdg",
+            "processId": 15901,
+            "exited": false
+        },
+        {
+            "deviceId": "1WMHH811SM0397",
+            "name": "com.allanpichardo.ftdg",
+            "processId": 17554,
+            "exited": false
+        },
+        {
+            "deviceId": "1WMHH811SM0397",
+            "name": "com.allanpichardo.ftdg",
+            "processId": 19311,
+            "exited": false
+        },
+        {
+            "deviceId": "1WMHH811SM0397",
+            "name": "com.allanpichardo.ftdg",
+            "processId": 21484,
+            "exited": false
+        },
+        {
+            "deviceId": "1WMHH811SM0397",
+            "name": "com.allanpichardo.ftdg",
+            "processId": 22698,
+            "exited": false
+        },
+        {
+            "deviceId": "1WMHH811SM0397",
+            "name": "com.allanpichardo.ftdg",
+            "processId": 24356,
+            "exited": false
+        },
+        {
+            "deviceId": "1WMHH811SM0397",
+            "name": "com.allanpichardo.ftdg",
+            "processId": 25234,
+            "exited": false
+        },
+        {
+            "deviceId": "1WMHH811SM0397",
+            "name": "com.allanpichardo.ftdg",
+            "processId": 30881,
+            "exited": false
+        },
+        {
+            "deviceId": "1WMHH811SM0397",
+            "name": "com.allanpichardo.ftdg",
+            "processId": 2253,
+            "exited": false
+        },
+        {
+            "deviceId": "1WMHH811SM0397",
+            "name": "com.allanpichardo.ftdg",
+            "processId": 3558,
+            "exited": false
+        },
+        {
+            "deviceId": "1WMHH811SM0397",
+            "name": "com.allanpichardo.ftdg",
+            "processId": 5455,
+            "exited": false
+        },
+        {
+            "deviceId": "1WMHH811SM0397",
+            "name": "com.allanpichardo.ftdg",
+            "processId": 12179,
+            "exited": false
+        },
+        {
+            "deviceId": "1WMHH811SM0397",
+            "name": "com.allanpichardo.ftdg",
+            "processId": 15167,
+            "exited": false
+        },
+        {
+            "deviceId": "1WMHH811SM0397",
+            "name": "com.allanpichardo.ftdg",
+            "processId": 17953,
+            "exited": false
+        },
+        {
+            "deviceId": "1WMHH811SM0397",
+            "name": "com.allanpichardo.ftdg",
+            "processId": 19706,
+            "exited": true
+        },
+        {
+            "deviceId": "1WMHH811SM0397",
+            "name": "com.allanpichardo.ftdg",
+            "processId": 20508,
             "exited": false
         }
     ],
@@ -101,7 +245,7 @@
         "MemoryGroup": 1,
         "Behavior": 1
     },
-    "m_Filter": "DataService",
+    "m_Filter": "Initialized()",
     "m_FilterIsRegularExpression": false,
     "m_SymbolPaths": []
 }

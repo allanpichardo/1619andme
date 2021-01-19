@@ -16,6 +16,7 @@ public class Star : MonoBehaviour
     public float timeToActivation = 1.0f;
     
     private bool _isActivating = false;
+    private bool _hasPlayed = false;
     private static readonly int Color45Edb685 = Shader.PropertyToID("Color_45EDB685");
     private static readonly int IsSelected = Animator.StringToHash("isSelected");
 
@@ -37,7 +38,11 @@ public class Star : MonoBehaviour
 
     public void OnActivate()
     {
-        OnLookedEnter();
+        if (!_hasPlayed)
+        {
+            _hasPlayed = true;
+            OnLookedEnter();
+        }
     }
 
     public void HandleInteraction(InteractableStateArgs state)

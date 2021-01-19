@@ -85,7 +85,8 @@ public class Constellation: MonoBehaviour
         float step = 0.01f;
         float t = 0.0f;
 
-        yield return DataService.DrawLineToMap(_current.GetAudioPoint(), _next.GetAudioPoint());
+        AudioPoint a = _current.GetAudioPoint();
+        AudioPoint b = _next.GetAudioPoint();
         
         _current = _next;
         _journeyParts.Add(_current.GetAudioPoint().origin);
@@ -103,20 +104,23 @@ public class Constellation: MonoBehaviour
         
         _current.OnPointerEnter();
 
+        if (_audioCallback != null)
+        {
+            _audioCallback.EnqueueAudioTrack(_current.GetAudioPoint().url, _step);
+        }
+        
+        yield return DataService.DrawLineToMap(a, b);
+        
         if(IsFinished())
         {
             RevealStar(_current);
-            _completionListener.OnFinished(this);
+            yield return new WaitForSeconds(10.0f);
+            _completionListener.OnFinished(this, _step);
             BeginFadeSequence();
         }
         else
         {
             ContinueSequence();
-        }
-        
-        if (_audioCallback != null)
-        {
-            _audioCallback.EnqueueAudioTrack(_current.GetAudioPoint().url, _step);
         }
     }
 
@@ -171,6 +175,6 @@ public class Constellation: MonoBehaviour
     
     public interface CompletionListener
     {
-        void OnFinished(Constellation constellation);
+        void OnFinished(Constellation constellation, int step);
     }
 }

@@ -11,6 +11,12 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/InteractTest.unity
     guid: 3fbfc64fd3fe0477b98515e0a4ecc493
+  - enabled: 0
+    path: Assets/Vuplex/WebView/Demos/Scenes/SimpleWebViewDemo.unity
+    guid: 10cf299739e784ee794fdc27cb3415bf
+  - enabled: 0
+    path: Assets/Vuplex/WebView/Demos/Scenes/CanvasWebViewDemo.unity
+    guid: d5ac12fb2aa3e4f07ba9f38c0ea0bfcf
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: e4424a8f8e86a4aa18e7bfef58682d50,
       type: 2}
